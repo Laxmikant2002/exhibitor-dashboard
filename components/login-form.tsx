@@ -17,15 +17,27 @@ export function LoginForm() {
     setIsLoading(true);
     setError(null);
 
+    console.log("Login attempt:", { email, password });
+
     try {
       // Demo Mode: Bypass Supabase authentication for demo account
-      if (email === "demo@exhibitor.com" && password === "demo123456") {
-        // Set demo session in localStorage
-        localStorage.setItem("demo_session", JSON.stringify({
+      if (email === "demo@exhibitor.com" && password === "DemoExhibitor2026!") {
+        console.log("Demo login detected - setting session...");
+        
+        // Set demo session in localStorage AND cookie (for middleware)
+        const demoSessionData = JSON.stringify({
           user: { email: "demo@exhibitor.com", id: "demo-user" },
           expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-        }));
-        router.push("/protected/meeting-requests");
+        });
+        localStorage.setItem("demo_session", demoSessionData);
+        
+        // Also set as cookie so middleware can detect it
+        document.cookie = `demo_session=${encodeURIComponent(demoSessionData)}; path=/; max-age=86400; SameSite=Lax`;
+        
+        console.log("Session set, redirecting to dashboard...");
+        
+        // Force a page refresh to trigger middleware
+        window.location.href = "/protected/meeting-requests";
         return;
       }
 
@@ -46,7 +58,7 @@ export function LoginForm() {
 
   const handleDemoLogin = () => {
     setEmail("demo@exhibitor.com");
-    setPassword("demo123456");
+    setPassword("DemoExhibitor2026!");
   };
 
   return (
@@ -63,7 +75,7 @@ export function LoginForm() {
             <h3 className="text-sm font-medium text-blue-800">Demo Account</h3>
             <div className="mt-2 text-sm text-blue-700">
               <p className="font-mono">Email: demo@exhibitor.com</p>
-              <p className="font-mono">Password: demo123456</p>
+              <p className="font-mono">Password: DemoExhibitor2026!</p>
             </div>
             <button
               type="button"

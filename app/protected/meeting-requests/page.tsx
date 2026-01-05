@@ -66,22 +66,39 @@ export default function MeetingRequestsPage() {
           />
 
             {isLoading ? (
-              <div className="bg-white rounded-lg shadow p-12">
+              <div className="bg-white rounded-xl shadow-md border border-gray-100 p-16">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Loading meeting requests...</p>
+                  <div className="relative mx-auto mb-6">
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-blue-600 mx-auto"></div>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Loading Meeting Requests</h3>
+                  <p className="text-sm text-gray-500">Please wait while we fetch your data...</p>
                 </div>
               </div>
             ) : error ? (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-red-800 font-semibold mb-2">Error Loading Data</h3>
-                <p className="text-red-600 mb-4">{error}</p>
-                <button
-                  onClick={loadRequests}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                >
-                  Try Again
-                </button>
+              <div className="bg-white rounded-xl shadow-md border border-red-100 p-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="h-12 w-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <svg className="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Data</h3>
+                    <p className="text-sm text-red-700 mb-4">{error}</p>
+                    <button
+                      onClick={loadRequests}
+                      className="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Try Again
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : (
               <MeetingRequestsTable

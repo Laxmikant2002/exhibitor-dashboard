@@ -7,8 +7,11 @@ export function LogoutButton() {
   const router = useRouter();
 
   const logout = async () => {
-    // Clear demo session if exists
+    // Clear demo session from localStorage
     localStorage.removeItem("demo_session");
+    
+    // Clear demo session cookie
+    document.cookie = "demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     
     // Clear Supabase session
     const supabase = createClient();

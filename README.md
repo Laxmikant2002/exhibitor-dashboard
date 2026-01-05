@@ -8,7 +8,7 @@
 
 ```
 Email: demo@exhibitor.com
-Password: demo123456
+Password: DemoExhibitor2026!
 ```
 
 *The login page has an auto-fill button for instant access!*
