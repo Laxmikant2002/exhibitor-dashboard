@@ -4,15 +4,16 @@ import { createClient } from '@/lib/supabase/server'
 // GET /api/meeting-requests/[id] - Fetch a single meeting request
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const supabase = await createClient()
     
     const { data, error } = await supabase
       .from('meeting_requests')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
 
     if (error) {
@@ -35,8 +36,9 @@ export async function GET(
 // PUT /api/meeting-requests/[id] - Update a meeting request
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const body = await request.json()
     const { visitor_name, meeting_date, expired_date } = body
@@ -66,7 +68,7 @@ export async function PUT(
         meeting_date,
         expired_date,
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -93,15 +95,16 @@ export async function PUT(
 // DELETE /api/meeting-requests/[id] - Delete a meeting request
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const supabase = await createClient()
 
     const { error } = await supabase
       .from('meeting_requests')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) {
       return NextResponse.json(

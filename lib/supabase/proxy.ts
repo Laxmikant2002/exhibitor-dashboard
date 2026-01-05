@@ -47,9 +47,13 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  // Check for demo session in cookies (set by client-side)
+  const demoSession = request.cookies.get("demo_session");
+
   if (
     request.nextUrl.pathname !== "/" &&
     !user &&
+    !demoSession &&
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth")
   ) {

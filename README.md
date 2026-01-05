@@ -2,7 +2,20 @@
 
 > A full-stack web application for managing exhibitor meeting requests with complete CRUD operations.
 
-## 📸 Live Demo
+## � Demo Access
+
+**For quick testing, use these demo credentials:**
+
+```
+Email: demo@exhibitor.com
+Password: demo123456
+```
+
+*The login page has an auto-fill button for instant access!*
+
+---
+
+## �📸 Live Demo
 
 **🔗 [View Live Demo](#)** *(Add your deployed link here)*
 

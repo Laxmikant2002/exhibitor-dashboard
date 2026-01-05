@@ -1,25 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function SignUpForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -44,7 +30,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: `${window.location.origin}/protected/meeting-requests`,
         },
       });
       if (error) throw error;
@@ -57,64 +43,71 @@ export function SignUpForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSignUp}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="repeat-password">Repeat Password</Label>
-                </div>
-                <Input
-                  id="repeat-password"
-                  type="password"
-                  required
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating an account..." : "Sign up"}
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="underline underline-offset-4">
-                Login
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="bg-white rounded-lg shadow p-8">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Sign up</h2>
+        <p className="text-sm text-gray-600 mt-1">Create a new account</p>
+      </div>
+      <form onSubmit={handleSignUp} className="space-y-6">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label htmlFor="repeat-password" className="block text-sm font-medium text-gray-700 mb-2">
+            Repeat Password
+          </label>
+          <input
+            id="repeat-password"
+            type="password"
+            required
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+          />
+        </div>
+        {error && (
+          <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+            {error}
+          </div>
+        )}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {isLoading ? "Creating an account..." : "Sign up"}
+        </button>
+        <div className="text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            Login
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }
