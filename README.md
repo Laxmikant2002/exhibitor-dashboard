@@ -1,53 +1,86 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# 🎯 Exhibitor Dashboard - Meeting Requests Management System
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+> A full-stack web application for managing exhibitor meeting requests with complete CRUD operations.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## 📸 Live Demo
 
-## Features
+**🔗 [View Live Demo](#)** *(Add your deployed link here)*
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+![Dashboard Preview](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Exhibitor+Dashboard+Preview)
 
-## Demo
+---
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+## 🚀 Project Overview
 
-## Deploy to Vercel
+A modern, single-page dashboard application that allows exhibitors to create, view, edit, and delete meeting requests efficiently. Built with enterprise-grade technologies and best practices.
 
-Vercel deployment will guide you through creating a Supabase account and project.
+### ✨ Key Features
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+- ✅ **Full CRUD Operations** - Create, Read, Update, Delete meeting requests
+- ✅ **Real-time Data** - Instant updates using Supabase real-time capabilities
+- ✅ **Form Validation** - Client and server-side validation for data integrity
+- ✅ **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- ✅ **Status Tracking** - Auto-detect expired meetings with visual badges
+- ✅ **RESTful API** - Well-structured API endpoints for external integrations
+- ✅ **Toast Notifications** - User-friendly feedback for all actions
+- ✅ **Loading States** - Professional UX with loading indicators
+- ✅ **Type Safety** - Full TypeScript implementation
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+---
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## 🎨 Tech Stack
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+| Technology | Purpose |
+|-----------|---------|
+| **[Next.js 14](https://nextjs.org/)** | React framework with App Router & Server Actions |
+| **[TypeScript](https://www.typescriptlang.org/)** | Type-safe development |
+| **[Tailwind CSS](https://tailwindcss.com/)** | Utility-first CSS framework |
+| **[Supabase](https://supabase.com/)** | PostgreSQL database & authentication |
+| **[Supabase SSR](https://supabase.com/docs/guides/auth/server-side)** | Server-side rendering with authentication |
+| **[shadcn/ui](https://ui.shadcn.com/)** | High-quality React components |
+
+---
+
+## 📊 Data Model
+
+### Meeting Request Schema
+
+```typescript
+{
+  id: UUID (Primary Key, Auto-generated)
+  visitor_name: string (Required)
+  meeting_date: date (Required)
+  expired_date: date (Required, must be after meeting_date)
+  created_at: timestamp (Auto-generated)
+}
+```
+
+---
+
+## 🎯 Features Demonstration
+
+### 1. Create Meeting Request
+- Fill out the form with visitor details
+- Select meeting and expiration dates
+- Validation ensures data integrity
+- Success notification on creation
+
+### 2. View All Requests
+- Responsive table layout
+- Status badges (Active/Expired)
+- Formatted dates
+- Sortable by creation date
+
+### 3. Edit Meeting Request
+- Click "Edit" on any request
+- Form pre-fills with existing data
+- Update and save changes
+- Real-time table refresh
+
+### 4. Delete Meeting Request
+- Click "Delete" with confirmation dialog
+- Instant removal from database
+- Success notification
 
 ## Clone and run locally
 

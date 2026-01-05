@@ -1,9 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { deleteMeetingRequest, type MeetingRequest } from "@/lib/supabase/meeting-requests"
 import { useToast } from "@/components/ui/toast"
 
@@ -56,77 +53,90 @@ export function MeetingRequestsTable({ requests, onEdit, onRefresh }: MeetingReq
 
   if (requests.length === 0) {
     return (
-      <Card>
-        <CardContent className="pt-6">
-          <p className="text-center text-muted-foreground">
-            No meeting requests found. Create your first meeting request above.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="bg-white rounded-lg shadow p-8">
+        <p className="text-center text-gray-600">
+          No meeting requests found. Create your first meeting request above.
+        </p>
+      </div>
     )
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Meeting Requests</CardTitle>
-        <CardDescription>Manage all meeting requests</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left p-3 font-semibold">Visitor Name</th>
-                <th className="text-left p-3 font-semibold">Meeting Date</th>
-                <th className="text-left p-3 font-semibold">Expired Date</th>
-                <th className="text-left p-3 font-semibold">Status</th>
-                <th className="text-left p-3 font-semibold">Created</th>
-                <th className="text-right p-3 font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requests.map((request) => (
-                <tr key={request.id} className="border-b hover:bg-muted/50 transition-colors">
-                  <td className="p-3">{request.visitor_name}</td>
-                  <td className="p-3">{formatDate(request.meeting_date)}</td>
-                  <td className="p-3">{formatDate(request.expired_date)}</td>
-                  <td className="p-3">
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-200">
+        <h2 className="text-xl font-semibold text-gray-900">Meeting Requests</h2>
+      </div>
+      
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Visitor Name
+              </th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Meeting Date
+              </th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Expired Date
+              </th>
+              <th className="text-right px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {requests.map((request) => (
+              <tr key={request.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                  {request.id.substring(0, 8)}...
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">{request.visitor_name}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {formatDate(request.meeting_date)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">{formatDate(request.expired_date)}</span>
                     {isExpired(request.expired_date) ? (
-                      <Badge variant="destructive">Expired</Badge>
+                      <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                        Expired
+                      </span>
                     ) : (
-                      <Badge>Active</Badge>
+                      <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                        Active
+                      </span>
                     )}
-                  </td>
-                  <td className="p-3 text-sm text-muted-foreground">
-                    {formatDate(request.created_at)}
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-2 justify-end">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onEdit(request)}
-                        disabled={deletingId === request.id}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDelete(request.id)}
-                        disabled={deletingId === request.id}
-                      >
-                        {deletingId === request.id ? "Deleting..." : "Delete"}
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </CardContent>
-    </Card>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      onClick={() => onEdit(request)}
+                      disabled={deletingId === request.id}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(request.id)}
+                      disabled={deletingId === request.id}
+                      className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    >
+                      {deletingId === request.id ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }

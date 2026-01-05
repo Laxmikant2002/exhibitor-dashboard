@@ -1,10 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState, useEffect } from "react"
 import { createMeetingRequest, updateMeetingRequest, type MeetingRequest } from "@/lib/supabase/meeting-requests"
 import { useToast } from "@/components/ui/toast"
 
@@ -20,6 +16,19 @@ export function MeetingRequestForm({ editingRequest, onSuccess, onCancel }: Meet
   const [expiredDate, setExpiredDate] = useState(editingRequest?.expired_date || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
+
+  // Update form when editingRequest changes
+  useEffect(() => {
+    if (editingRequest) {
+      setVisitorName(editingRequest.visitor_name)
+      setMeetingDate(editingRequest.meeting_date)
+      setExpiredDate(editingRequest.expired_date)
+    } else {
+      setVisitorName("")
+      setMeetingDate("")
+      setExpiredDate("")
+    }
+  }, [editingRequest])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,64 +93,78 @@ export function MeetingRequestForm({ editingRequest, onSuccess, onCancel }: Meet
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{editingRequest ? "Edit Meeting Request" : "Create Meeting Request"}</CardTitle>
-        <CardDescription>
-          {editingRequest ? "Update the meeting request details" : "Fill in the details to create a new meeting request"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="visitorName">Visitor Name</Label>
-            <Input
-              id="visitorName"
-              type="text"
-              placeholder="Enter visitor name"
-              value={visitorName}
-              onChange={(e) => setVisitorName(e.target.value)}
-              disabled={isSubmitting}
-              required
-            />
-          </div>
+    <div className="bg-white rounded-lg shadow p-6">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        {editingRequest ? "Edit Meeting Request" : "Create Meeting Request"}
+      </h2>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label htmlFor="visitorName" className="block text-sm font-medium text-gray-700 mb-2">
+            Visitor Name
+          </label>
+          <input
+            id="visitorName"
+            type="text"
+            placeholder="Enter visitor name"
+            value={visitorName}
+            onChange={(e) => setVisitorName(e.target.value)}
+            disabled={isSubmitting}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="meetingDate">Meeting Date</Label>
-            <Input
-              id="meetingDate"
-              type="date"
-              value={meetingDate}
-              onChange={(e) => setMeetingDate(e.target.value)}
-              disabled={isSubmitting}
-              required
-            />
-          </div>
+        <div>
+          <label htmlFor="meetingDate" className="block text-sm font-medium text-gray-700 mb-2">
+            Meeting Date
+          </label>
+          <input
+            id="meetingDate"
+            type="date"
+            value={meetingDate}
+            onChange={(e) => setMeetingDate(e.target.value)}
+            disabled={isSubmitting}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="expiredDate">Expired Date</Label>
-            <Input
-              id="expiredDate"
-              type="date"
-              value={expiredDate}
-              onChange={(e) => setExpiredDate(e.target.value)}
-              disabled={isSubmitting}
-              required
-            />
-          </div>
+        <div>
+          <label htmlFor="expiredDate" className="block text-sm font-medium text-gray-700 mb-2">
+            Expired Date
+          </label>
+          <input
+            id="expiredDate"
+            type="date"
+            value={expiredDate}
+            onChange={(e) => setExpiredDate(e.target.value)}
+            disabled={isSubmitting}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </div>
 
-          <div className="flex gap-2 pt-4">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : editingRequest ? "Update" : "Create"}
-            </Button>
-            {editingRequest && onCancel && (
-              <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-                Cancel
-              </Button>
-            )}
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+        <div className="flex gap-3 pt-2">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed font-medium"
+          >
+            {isSubmitting ? "Saving..." : editingRequest ? "Update" : "Create"}
+          </button>
+          {editingRequest && onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed font-medium"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   )
 }
